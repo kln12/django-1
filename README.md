@@ -33,3 +33,22 @@ REST_FRAMEWORK = {
         'rest_framework_json_api.renderers.JSONRenderer',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json'}
+
+
+REST_FRAMEWORK['DEFAULT_FILTER_BACKENDS']
+from rest_framework_json_api import filters
+from rest_framework_json_api import django_filters
+from rest_framework import SearchFilter
+from models import MyModel
+
+class MyViewset(ModelViewSet):
+   queryset = MyModel.objects.all()
+   serializer_class = MyModelSerializer
+   filter_backends = (filters.QueryParameterValidationFilter, filters.OrderingFilter,
+                      django_filters.DjangoFilterBackend, SearchFilter)
+   filterset_fields = {
+       'id': ('exact', 'lt', 'gt', 'gte', 'lte', 'in'),
+       'descriptuon': ('icontains', 'iexact', 'contains'),
+       'tagline': ('icontains', 'iexact', 'contains'),
+   }
+   search_fields = ('id', 'description', 'tagline',)
