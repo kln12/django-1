@@ -52,3 +52,12 @@ class MyViewset(ModelViewSet):
        'tagline': ('icontains', 'iexact', 'contains'),
    }
    search_fields = ('id', 'description', 'tagline',)
+
+class Me(models.Model):
+    """
+    A simple model
+    """
+    name = models.CharField(max_length=100)
+
+    class JSONAPIMeta:
+        resource_name = "users"
